@@ -126,10 +126,22 @@ func Verify(ctx context.Context, signedImgRef name.Reference, accessor Accessor,
 		return nil, false, err
 	}
 	// Both of the SignedEntity types implement Digest()
-	h, err := se.(interface{ Digest() (v1.Hash, error) }).Digest()
+	// ResolveDigest is smart about not making a call out if we already have
+	// a digest.
+	digest, err := ociremote.ResolveDigest(signedImgRef, co.RegistryClientOpts...)
 	if err != nil {
 		return nil, false, err
 	}
+	h, err := v1.NewHash(digest.Identifier())
+	if err != nil {
+		return nil, false, err
+	}
+	/*
+		h, err := se.(interface{ Digest() (v1.Hash, error) }).ResolveDigest()
+		if err != nil {
+			return nil, false, err
+		}
+	*/
 
 	// TODO(mattmoor): We could implement recursive verification if we just wrapped
 	// most of the logic below here in a call to mutate.Map
