@@ -35,7 +35,7 @@ func (o *FulcioOptions) AddFlags(cmd *cobra.Command) {
 		"[EXPERIMENTAL] address of sigstore PKI server")
 
 	cmd.Flags().StringVar(&o.IdentityToken, "identity-token", "",
-		"[EXPERIMENTAL] identity token to use for certificate from fulcio")
+		"[EXPERIMENTAL] identity token to use for certificate from fulcio. Prefix with file:// to read from that file, for example file:///var/run/kind-oidc if running on k8s.")
 
 	cmd.Flags().BoolVar(&o.InsecureSkipFulcioVerify, "insecure-skip-verify", false,
 		"[EXPERIMENTAL] skip verifying fulcio published to the SCT (this should only be used for testing).")

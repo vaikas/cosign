@@ -17,6 +17,8 @@ package cli
 
 import (
 	"flag"
+	"io/ioutil"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -85,6 +87,14 @@ func Sign() *cobra.Command {
 				OIDCClientID:             o.OIDC.ClientID,
 				OIDCClientSecret:         o.OIDC.ClientSecret,
 			}
+			if strings.HasPrefix(ko.IDToken, "file://") {
+				fileBytes, err := ioutil.ReadFile(strings.TrimLeft(ko.IDToken, "file://"))
+				if err != nil {
+					return errors.Wrap(err, "Reading IDToken credentials")
+				}
+				ko.IDToken = string(fileBytes)
+			}
+
 			annotationsMap, err := o.AnnotationsMap()
 			if err != nil {
 				return err
