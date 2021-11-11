@@ -17,6 +17,7 @@ package cli
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"strings"
 
@@ -88,10 +89,12 @@ func Sign() *cobra.Command {
 				OIDCClientSecret:         o.OIDC.ClientSecret,
 			}
 			if strings.HasPrefix(ko.IDToken, "file://") {
+				fmt.Printf("READING FILE: %s", strings.TrimLeft(ko.IDToken, "file://"))
 				fileBytes, err := ioutil.ReadFile(strings.TrimLeft(ko.IDToken, "file://"))
 				if err != nil {
 					return errors.Wrap(err, "Reading IDToken credentials")
 				}
+				fmt.Printf("READ FILE: %q", string(fileBytes))
 				ko.IDToken = string(fileBytes)
 			}
 
