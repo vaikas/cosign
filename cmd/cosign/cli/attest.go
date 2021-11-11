@@ -16,6 +16,9 @@
 package cli
 
 import (
+	"io/ioutil"
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
@@ -69,6 +72,14 @@ func Attest() *cobra.Command {
 				OIDCClientID:             o.OIDC.ClientID,
 				OIDCClientSecret:         o.OIDC.ClientSecret,
 			}
+			if strings.HasPrefix(ko.IDToken, "file://") {
+				fileBytes, err := ioutil.ReadFile(strings.TrimLeft(ko.IDToken, "file://"))
+				if err != nil {
+					return errors.Wrap(err, "Reading IDToken credentials")
+				}
+				ko.IDToken = string(fileBytes)
+			}
+
 			for _, img := range args {
 				if err := attest.AttestCmd(cmd.Context(), ko, o.Registry, img, o.Cert, o.NoUpload,
 					o.Predicate.Path, o.Force, o.Predicate.Type, o.Timeout); err != nil {
