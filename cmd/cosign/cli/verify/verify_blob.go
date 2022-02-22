@@ -47,6 +47,7 @@ import (
 	"github.com/sigstore/rekor/pkg/generated/models"
 	"github.com/sigstore/rekor/pkg/types"
 	hashedrekord "github.com/sigstore/rekor/pkg/types/hashedrekord/v0.0.1"
+	intoto "github.com/sigstore/rekor/pkg/types/intoto/v0.0.1"
 	rekord "github.com/sigstore/rekor/pkg/types/rekord/v0.0.1"
 	"github.com/sigstore/sigstore/pkg/cryptoutils"
 	"github.com/sigstore/sigstore/pkg/signature"
@@ -343,6 +344,11 @@ func extractCerts(e *models.LogEntryAnon) ([]*x509.Certificate, error) {
 		}
 	case *hashedrekord.V001Entry:
 		publicKeyB64, err = e.HashedRekordObj.Signature.PublicKey.Content.MarshalText()
+		if err != nil {
+			return nil, err
+		}
+	case *intoto.V001Entry:
+		publicKeyB64, err = e.IntotoObj.PublicKey.MarshalText()
 		if err != nil {
 			return nil, err
 		}
