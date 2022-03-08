@@ -19,7 +19,7 @@ require (
 	github.com/google/trillian v1.3.14-0.20210713114448-df474653733c
 	github.com/in-toto/in-toto-golang v0.3.4-0.20211115151443-952a6cf50fc9
 	github.com/manifoldco/promptui v0.9.0
-	github.com/miekg/pkcs11 v1.0.3
+	github.com/miekg/pkcs11 v1.1.1
 	github.com/open-policy-agent/opa v0.34.2
 	github.com/pkg/errors v0.9.1
 	github.com/secure-systems-lab/go-securesystemslib v0.1.0
