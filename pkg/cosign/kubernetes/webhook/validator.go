@@ -267,12 +267,15 @@ func validatePolicies(ctx context.Context, ref name.Reference, policies map[stri
 					logging.FromContext(ctx).Infof("Validating CIP level policy for %s", cipName)
 					policyJSON, err := json.Marshal(result.policyResult)
 					if err != nil {
-						results <- result
+						result.errors = append(result.errors, err)
 					} else {
 						logging.FromContext(ctx).Infof("Validating CIP level policy against %s", string(policyJSON))
 						err = policy.EvaluatePolicyAgainstJSON(ctx, "ClusterImagePolicy", cip.Policy.Type, cip.Policy.Data, policyJSON)
 						if err != nil {
+							logging.FromContext(ctx).Errorf("failed to validate CIP level policy %s", err.Error()) // nolint
 							result.errors = append(result.errors, err)
+						} else {
+							logging.FromContext(ctx).Infof("validated CIP level policy")
 						}
 					}
 				}

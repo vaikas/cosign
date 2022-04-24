@@ -106,6 +106,9 @@ spec:
         keylessatt: {
           attestations: struct.MinFields(2) & struct.MaxFields(2)
         },
+        keysignature: {
+          signatures: list.MaxItems(1) & list.MinItems(1)
+        },
         keylesssignature: {
           signatures: list.MaxItems(1) & list.MinItems(1)
         }
