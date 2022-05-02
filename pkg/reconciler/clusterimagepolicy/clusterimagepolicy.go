@@ -63,6 +63,7 @@ var _ clusterimagepolicyreconciler.Finalizer = (*Reconciler)(nil)
 
 // ReconcileKind implements Interface.ReconcileKind.
 func (r *Reconciler) ReconcileKind(ctx context.Context, cip *v1alpha1.ClusterImagePolicy) reconciler.Event {
+	logging.FromContext(ctx).Infof("Doing ReconcileKind for %+v", cip)
 	cipCopy, cipErr := r.inlinePublicKeys(ctx, cip)
 	if cipErr != nil {
 		r.handleCIPError(ctx, cip.Name)
