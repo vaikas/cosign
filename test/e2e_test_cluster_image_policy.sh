@@ -125,6 +125,7 @@ COSIGN_EXPERIMENTAL=1 ./cosign verify --rekor-url ${REKOR_URL} --allow-insecure-
 echo '::endgroup::'
 
 echo '::group:: Create test namespace and label for verification'
+kubectl -n cosign-system label cm config-image-policies new-label=awesome
 kubectl create namespace demo-keyless-signing
 kubectl label namespace demo-keyless-signing cosigned.sigstore.dev/include=true
 export NS=demo-keyless-signing
