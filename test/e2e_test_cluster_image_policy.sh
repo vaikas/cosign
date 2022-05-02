@@ -132,7 +132,7 @@ export NS=demo-keyless-signing
 echo '::endgroup::'
 
 echo '::group:: test job success'
-kubectl cip -oyaml
+kubectl get cip -oyaml
 kubectl -n cosign-system get cm config-image-policies -oyaml
 # We signed this above, this should work
 if ! kubectl create -n demo-keyless-signing job demo --image=${demoimage} ; then
